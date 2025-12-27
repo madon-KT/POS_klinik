@@ -1,5 +1,6 @@
 FROM php:8.2-fpm-alpine
 
+# Install system dependencies
 RUN apk add --no-cache \
     nginx \
     supervisor \
@@ -8,20 +9,36 @@ RUN apk add --no-cache \
     oniguruma-dev \
     icu-dev \
     zip \
-    unzip
+    unzip \
+    nodejs \
+    npm
 
-RUN docker-php-ext-install pdo pdo_mysql mbstring zip intl
+# PHP extensions
+RUN docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    mbstring \
+    zip \
+    intl
 
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader \
- && chown -R www-data:www-data storage bootstrap/cache
+# Install PHP deps
+RUN composer install --no-dev --optimize-autoloader
 
-COPY docker/nginx.conf /etc/nginx/nginx.conf
-COPY docker/supervisord.conf /etc/supervisord.conf
+# Build Vite assets (INI YANG PENTING)
+RUN npm install && npm run build
+
+# Laravel permissions
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+# Nginx & Supervisor
+COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./docker/supervisord.conf /etc/supervisord.conf
 
 EXPOSE 80
 
