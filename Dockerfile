@@ -31,7 +31,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # Build Vite assets (INI YANG PENTING)
-RUN npm install && npm run build
+RUN npm install --legacy-peer-deps && npm run build
 
 # Laravel permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
