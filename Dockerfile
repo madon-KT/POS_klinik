@@ -47,12 +47,13 @@ RUN composer install --no-dev --optimize-autoloader
 # ===============================
 # PHP-FPM socket configuration
 # ===============================
-RUN mkdir -p /var/run/php \
- && chown -R www-data:www-data /var/run/php \
- && sed -i 's|listen = .*|listen = /var/run/php/php-fpm.sock|' /usr/local/etc/php-fpm.d/www.conf \
+RUN mkdir -p /var/run \
+ && chown -R www-data:www-data /var/run \
+ && sed -i 's|listen = .*|listen = /var/run/php-fpm.sock|' /usr/local/etc/php-fpm.d/www.conf \
  && sed -i 's|;listen.owner = nobody|listen.owner = www-data|' /usr/local/etc/php-fpm.d/www.conf \
  && sed -i 's|;listen.group = nobody|listen.group = www-data|' /usr/local/etc/php-fpm.d/www.conf \
  && sed -i 's|;listen.mode = 0660|listen.mode = 0660|' /usr/local/etc/php-fpm.d/www.conf
+
 
 # ===============================
 # Laravel permissions
