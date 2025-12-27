@@ -18,19 +18,7 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader \
- && mkdir -p /var/run \
- && chown -R www-data:www-data /var/run /var/www/html \
- && chmod -R 775 storage bootstrap/cache
-
-# PHP-FPM via socket
-RUN sed -i 's|listen = .*|listen = /var/run/php-fpm.sock|' \
-    /usr/local/etc/php-fpm.d/www.conf \
- && sed -i 's|;listen.owner = nobody|listen.owner = www-data|' \
-    /usr/local/etc/php-fpm.d/www.conf \
- && sed -i 's|;listen.group = nobody|listen.group = www-data|' \
-    /usr/local/etc/php-fpm.d/www.conf \
- && sed -i 's|;listen.mode = 0660|listen.mode = 0660|' \
-    /usr/local/etc/php-fpm.d/www.conf
+ && chown -R www-data:www-data storage bootstrap/cache
 
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/supervisord.conf /etc/supervisord.conf
