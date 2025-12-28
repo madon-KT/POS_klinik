@@ -1,19 +1,16 @@
 FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
-    nginx \
-    supervisor \
-    curl \
-    libzip-dev \
-    oniguruma-dev \
-    icu-dev \
-    zip \
-    unzip \
-    nodejs \
-    npm \
-    mariadb-dev
+    nginx supervisor curl \
+    libzip-dev oniguruma-dev icu-dev \
+    zip unzip nodejs npm \
+    mariadb-connector-c-dev
 
-RUN docker-php-ext-install pdo pdo_mysql mbstring zip intl
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    zip \
+    intl
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
