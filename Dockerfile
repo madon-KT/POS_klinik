@@ -1,9 +1,17 @@
 FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
-    nginx supervisor curl \
-    libzip-dev oniguruma-dev icu-dev \
-    zip unzip nodejs npm
+    nginx \
+    supervisor \
+    curl \
+    libzip-dev \
+    oniguruma-dev \
+    icu-dev \
+    zip \
+    unzip \
+    nodejs \
+    npm \
+    mariadb-dev
 
 RUN docker-php-ext-install pdo pdo_mysql mbstring zip intl
 
