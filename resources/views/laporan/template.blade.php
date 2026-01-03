@@ -43,7 +43,7 @@
         <p>
             Laporan transaksi dari tanggal
             {{ \Carbon\Carbon::parse(request('tanggal_mulai'))->format('d-m-Y') }}
-            sampai 
+            sampai
             {{ \Carbon\Carbon::parse(request('tanggal_selesai'))->format('d-m-Y') }}
         </p>
     @else
