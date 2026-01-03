@@ -63,12 +63,18 @@
         <div>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded shadow">Tampilkan</button>
         </div>
+        <a href="{{ route('laporan.pdf', request()->query()) }}"
+   class="bg-red-500 text-white px-4 py-2 rounded shadow"
+   target="_blank">
+    Cetak PDF
+</a>
+
         <div>
         <div>
         @php
     $refreshUrl = route('laporan.index', ['refresh' => true]);
 @endphp
-
+        
 <button onclick="window.location.href='{{ $refreshUrl }}'" class="bg-gray-500 text-white px-4 py-2 rounded shadow">
     Refresh
 </button>
@@ -115,7 +121,7 @@
                             </td>
                             <td class="border px-4 py-2">
                                 @foreach ($transaksi->details as $detail)
-                                    {{ $detail->jumlah }}<br>
+                                    {{ $detail->jumlah }} x Rp {{ number_format($detail->subtotal / $detail->jumlah, 0, ',', '.') }}<br>
                                 @endforeach
                             </td>
                             <td class="border px-4 py-2">
