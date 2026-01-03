@@ -37,12 +37,21 @@
 </head>
 <body>
     <div class="header">
-        <h2>Laporan Transaksi</h2>
-        <p>Dicetak pada: {{ now()->format('d-m-Y H:i:s') }}</p>
-        @if (request('tanggal_mulai') && request('tanggal_selesai'))
-            <p>Periode: {{ request('tanggal_mulai') }} s/d {{ request('tanggal_selesai') }}</p>
-        @endif
-    </div>
+    <h2>Laporan Transaksi</h2>
+
+    @if (request('tanggal_mulai') && request('tanggal_selesai'))
+        <p>
+            Laporan transaksi dari tanggal
+            {{ \Carbon\Carbon::parse(request('tanggal_mulai'))->format('d-m-Y') }}
+            -
+            {{ \Carbon\Carbon::parse(request('tanggal_selesai'))->format('d-m-Y') }}
+        </p>
+    @else
+        <p>Laporan transaksi seluruh periode</p>
+    @endif
+
+    <p>Dicetak pada: {{ now()->format('d-m-Y H:i:s') }}</p>
+</div>
 
     <table>
         <thead>
@@ -62,7 +71,7 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $transaksi->created_at->format('d-m-Y') }}</td>
                         <td>{{ $detail->obat->nama_obat ?? 'Obat tidak ditemukan' }}</td>
-                        <td>{{ $detail->jumlah }}</td>
+                        <td>{{ $detail->jumlah }} x Rp {{ number_format($detail->subtotal / $detail->jumlah, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
                         @if ($loop->first)
                             <td rowspan="{{ $transaksi->details->count() }}">Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</td>
