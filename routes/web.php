@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 /*
@@ -34,7 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('transaksi', TransaksiController::class);
     Route::get('/transaksi/nota/{id}', [TransaksiController::class, 'cetakNota'])->name('transaksi.nota');
     Route::get('/transaksi/nota/thermal/{id}', [TransaksiController::class, 'cetakNotaThermal'])->name('transaksi.nota.thermal');
-    Route::get('/laporan', [TransaksiController::class, 'laporan'])->name('laporan.index');
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/pdf', [LaporanController::class, 'pdf'])->name('laporan.pdf');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
